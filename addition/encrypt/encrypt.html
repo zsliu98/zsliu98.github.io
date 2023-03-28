@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AES & RSA Encryption</title>
+        <link rel="stylesheet" href="styles/main.css" />
+    </head>
+
+    <body>
+
+        <div class="page">
+            <h1>AES & RSA Encryption</h1>
+            <p class="header-description">
+                All your data are kept confidential by performing all cryptographic operations in your web browser locally.
+            </p>
+
+            <div class="field">
+                <label for="text-to-encrypt">Plaintext</label>
+                <textarea id="text-to-encrypt" rows=11></textarea>
+            </div>
+
+                <button id="button1" class="left-btn">Encrypt Plaintext</button>
+                <button id="button2" class="right-btn">Copy to Clipboard</button>
+                <div id="message"></div>
+            <div class="field">
+                <label for="encrypted-text">Ciphertext</label>
+                <textarea id="encrypted-text" rows=11></textarea>
+            </div>
+        </div>
+    </body>
+
+    <script src="scripts/cryptico.min.js"></script>
+    <script>
+        (function () {
+            var publicKey = "xeKWU9mI/hCgrJuULS2SHzXPG9VzFdB7pnjkDdVMllTC9qfQIZOVOecBkorIcmCC3k5WMjRSR+bWC5obnado8cpiO+K1S8fLygdTEO0zQQGH7dGJy3REnB/2kHxfQx+3+bGMmOXHhNgV4ZYsS6Ntfzj8NxwfVvVH5o5qmz333as="
+
+            var textToEncrypt = document.getElementById("text-to-encrypt");
+            var button1 = document.getElementById("button1");
+            var message = document.getElementById("message");
+            var encryptedText = document.getElementById("encrypted-text");
+            message.innerText = " \n "
+
+
+            var encrypt = function () {
+                button1.disabled = true;
+                message.innerText = "Processing\n...";
+                var result = cryptico.encrypt(encodeURIComponent(textToEncrypt.value), publicKey);
+                encryptedText.value = result.cipher;
+                message.innerText = "Encryption\nSuccess";
+                button1.disabled = false;
+            };
+
+            var copyclip = function () {
+                button2.disabled = true;
+                var copyText = document.getElementById("encrypted-text");
+                /* Select the text field */
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); /* For mobile devices */
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+                message.innerText = "Copy\nSuccess";
+                button2.disabled = false;
+            }
+
+            button1.addEventListener("click", encrypt);
+            button2.addEventListener("click", copyclip);
+        })();
+    </script>
+</html>
